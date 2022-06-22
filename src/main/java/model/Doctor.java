@@ -6,10 +6,8 @@ import constants.ComparatorDateOfBihtrday;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class Doctor extends Person {
     private static List<Doctor> extension = new ArrayList<>();
@@ -25,7 +23,7 @@ public class Doctor extends Person {
         extension.add(this);
     }
 
-    public void addVisit(Visit visit) {
+   public void addVisit(Visit visit) {
         visits.add(visit);
     }
 
@@ -74,12 +72,14 @@ public class Doctor extends Person {
         return maxDoctorsSpecialization;
     }
 
-    public static int numberOfDifferentSpecializations(List<Doctor> list) {
-        HashSet<String> specializations = new HashSet<>();
-        for (Doctor doctor : list) {
-            specializations.add(doctor.getSpeciality());
-        }
-        return specializations.size();
+    public static long numberOfDifferentSpecializations(List<Doctor> list) {
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(d -> d.getSpeciality())
+                .distinct()
+                .count();
     }
 
     public static List<Doctor> nTopMostOldest(List<Doctor> list, int nTop) {
