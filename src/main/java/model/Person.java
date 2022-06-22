@@ -17,7 +17,7 @@ public abstract class Person {
         this.personalId = personalId;
     }
 
-    public int getId() {
+    public final int getId() {
         return id;
     }
 
@@ -25,7 +25,7 @@ public abstract class Person {
         this.id = id;
     }
 
-    public String getName() {
+    public final String getName() {
         return name;
     }
 
