@@ -4,10 +4,10 @@ import java.time.LocalDate;
 
 public abstract class Person {
     private int id;
-    private String name;
-    private String surname;
-    private LocalDate dateOfBirthday;
-    private String personalId;
+    private final String name;
+    private final String surname;
+    private final LocalDate dateOfBirthday;
+    private final String personalId;
 
     public Person(int id, String name, String surname, LocalDate dateOfBirthday, String personalId) {
         this.id = id;
@@ -29,16 +29,8 @@ public abstract class Person {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getSurname() {
         return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
     }
 
     public LocalDate getDateOfBirthday() {

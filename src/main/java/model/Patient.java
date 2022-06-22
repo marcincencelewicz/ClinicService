@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient extends Person {
-    private static List<Patient> extension = new ArrayList<>();
+    private static final List<Patient> extension = new ArrayList<>();
     private List<Visit> visits = new ArrayList<>();
 
     public Patient(int id, String name, String surname, String personalId, LocalDate dateOfBirthday) {

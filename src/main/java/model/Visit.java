@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Visit {
-    private static List<Visit> extension = new ArrayList<>();
+    private static final List<Visit> extension = new ArrayList<>();
     private Doctor doctor;
     private Patient patient;
     private LocalDate dateOfVisit;

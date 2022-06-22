@@ -10,10 +10,10 @@ import java.util.*;
 import java.util.stream.Stream;
 
 public class Doctor extends Person {
-    private static List<Doctor> extension = new ArrayList<>();
+    private static final List<Doctor> extension = new ArrayList<>();
     private List<Visit> visits = new ArrayList<>();
     private String speciality;
-    private String nip;
+    private final String nip;
 
     public Doctor(int id, String name, String surname, String speciality, LocalDate dateOfBirthday, String personalId, String nip) {
         super(id, name, surname, dateOfBirthday, personalId);
