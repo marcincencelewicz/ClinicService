@@ -1,7 +1,7 @@
 package model;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import Interfaces.IReadFile;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -18,14 +18,12 @@ public class Patient extends Person{
         extension.add(this);
     }
 
+    public void addVisit(Visit visit) {
+        visits.add(visit);
+    }
+
     public static void readFile(String path) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(path));
-        String line;
-        List<String> reading = new ArrayList<>();
-        while ((line = br.readLine()) != null) {
-            reading.add(line);
-        }
-        reading.remove(0);
+        List<String> reading = IReadFile.readFilePath(path);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
         for (String s : reading) {
             String[] tab = s.split("\\t");

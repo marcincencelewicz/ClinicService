@@ -1,9 +1,6 @@
 package model;
 
 import Interfaces.IReadFile;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -24,6 +21,9 @@ public class Doctor extends Person {
       extension.add(this);
    }
 
+   public void addVisit(Visit visit) {
+      visits.add(visit);
+   }
    public static void readFile(String path) throws IOException {
       List<String> reading = IReadFile.readFilePath(path);
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
