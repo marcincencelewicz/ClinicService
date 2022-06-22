@@ -1,5 +1,7 @@
 package model;
 
+import Interfaces.IReadFile;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,13 +25,7 @@ public class Doctor extends Person {
    }
 
    public static void readFile(String path) throws IOException {
-      BufferedReader br = new BufferedReader(new FileReader(path));
-      String line;
-      List<String> reading = new ArrayList<>();
-      while ((line = br.readLine()) != null) {
-         reading.add(line);
-      }
-      reading.remove(0);
+      List<String> reading = IReadFile.readFilePath(path);
       DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
       for (String s : reading) {
          String[] tab = s.split("\\t");
