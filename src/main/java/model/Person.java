@@ -29,15 +29,15 @@ public abstract class Person {
         return name;
     }
 
-    public String getSurname() {
+    public final String getSurname() {
         return surname;
     }
 
-    public LocalDate getDateOfBirthday() {
+    public final LocalDate getDateOfBirthday() {
         return dateOfBirthday;
     }
 
-    public String getPersonalId() {
+    public final String getPersonalId() {
         return personalId;
     }
 
