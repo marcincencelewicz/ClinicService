@@ -44,7 +44,7 @@ public class Patient extends Person {
         }
     }
 
-    public static List<Patient> getExtension() {
+    public static final List<Patient> getExtension() {
         return extension;
     }
 

@@ -81,11 +81,11 @@ public class Visit {
         }
     }
 
-    public static List<Visit> getExtension() {
+    public static final List<Visit> getExtension() {
         return extension;
     }
 
-    public LocalDate getDateOfVisit() {
+    public final LocalDate getDateOfVisit() {
         return dateOfVisit;
     }
 

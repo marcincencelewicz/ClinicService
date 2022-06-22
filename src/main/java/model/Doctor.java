@@ -99,7 +99,7 @@ public class Doctor extends Person {
         }
     }
 
-    public static List<Doctor> getExtension() {
+    public static final List<Doctor> getExtension() {
         return extension;
     }
 
@@ -111,7 +111,7 @@ public class Doctor extends Person {
         this.visits = visits;
     }
 
-    public String getSpeciality() {
+    public final String getSpeciality() {
         return speciality;
     }
 
@@ -119,7 +119,7 @@ public class Doctor extends Person {
         this.speciality = speciality;
     }
 
-    public String getNip() {
+    public final String getNip() {
         return nip;
     }
 }
