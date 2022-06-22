@@ -2,7 +2,6 @@ import model.Doctor;
 import model.Patient;
 import model.Visit;
 
-import javax.print.Doc;
 import java.io.IOException;
 
 

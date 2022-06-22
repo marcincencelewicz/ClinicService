@@ -2,13 +2,11 @@ package model;
 
 import Interfaces.IReadFile;
 
-import javax.print.Doc;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class Visit {
     private static List<Visit> extension = new ArrayList<>();
@@ -17,13 +15,34 @@ public class Visit {
     private LocalDate dateOfVisit;
 
     public Visit(int idDoctor, int idPatient, LocalDate dateOfVisit) throws IllegalAccessException {
-        this.doctor = findDoctor(idDoctor,Doctor.getExtension());
+        this.doctor = findDoctor(idDoctor, Doctor.getExtension());
         this.patient = findPatient(idPatient, Patient.getExtension());
         this.dateOfVisit = dateOfVisit;
 
         doctor.addVisit(this);
         patient.addVisit(this);
         extension.add(this);
+    }
+
+    public static int theMostVisitOfYear(List<Visit> list) {
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("List must not empty");
+        }
+        int maxYear = list.get(0).getDateOfVisit().getYear();
+        int tempMax = 0;
+        for (Visit visit : list) {
+            int temp = 0;
+            for (Visit visit1 : list) {
+                if (visit.getDateOfVisit().getYear() == visit1.getDateOfVisit().getYear()) {
+                    temp++;
+                }
+                if (tempMax < temp) {
+                    tempMax = temp;
+                    maxYear = visit.getDateOfVisit().getYear();
+                }
+            }
+        }
+        return maxYear;
     }
 
     public Doctor findDoctor(int idDoctor, List<Doctor> list) {
@@ -38,6 +57,7 @@ public class Visit {
         }
         return foundDoctor;
     }
+
     public Patient findPatient(int idPatient, List<Patient> list) {
         if (list == null || list.isEmpty()) {
             throw new IllegalArgumentException("list must not empty");
@@ -59,27 +79,6 @@ public class Visit {
             String[] tab = s.split("\\t");
             Visit visit = new Visit(Integer.parseInt(tab[0]), Integer.parseInt(tab[1]), LocalDate.parse(tab[2], dtf));
         }
-    }
-
-    public static int theMostVisitOfYear(List<Visit> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("List must not empty");
-        }
-        int maxYear = list.get(0).getDateOfVisit().getYear();
-        int tempMax = 0;
-        for (Visit visit : list) {
-            int temp = 0;
-            for (Visit visit1 :list) {
-                if (visit.getDateOfVisit().getYear() == visit1.getDateOfVisit().getYear()) {
-                    temp++;
-                }
-                if (tempMax < temp) {
-                    tempMax = temp;
-                    maxYear = visit.getDateOfVisit().getYear();
-                }
-            }
-        }
-        return maxYear;
     }
 
     public static List<Visit> getExtension() {

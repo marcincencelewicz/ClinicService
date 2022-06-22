@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Patient extends Person{
+public class Patient extends Person {
     private static List<Patient> extension = new ArrayList<>();
     private List<Visit> visits = new ArrayList<>();
 
@@ -22,15 +22,7 @@ public class Patient extends Person{
         visits.add(visit);
     }
 
-    public static void readFile(String path) throws IOException {
-        List<String> reading = IReadFile.readFilePath(path);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
-        for (String s : reading) {
-            String[] tab = s.split("\\t");
-            Patient patient = new Patient(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf));
-        }
-    }
-    public static Patient theMostVisit (List<Patient> list){
+    public static Patient theMostVisit(List<Patient> list) {
         if (list == null || list.isEmpty()) {
             throw new IllegalArgumentException("List must not empty");
         }
@@ -41,6 +33,15 @@ public class Patient extends Person{
             }
         }
         return maxVisit;
+    }
+
+    public static void readFile(String path) throws IOException {
+        List<String> reading = IReadFile.readFilePath(path);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
+        for (String s : reading) {
+            String[] tab = s.split("\\t");
+            Patient patient = new Patient(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf));
+        }
     }
 
     public static List<Patient> getExtension() {

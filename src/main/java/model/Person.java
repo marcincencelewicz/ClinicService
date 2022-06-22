@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public abstract class Person {
     private int id;
@@ -10,7 +9,7 @@ public abstract class Person {
     private LocalDate dateOfBirthday;
     private String personalId;
 
-    public  Person(int id, String name, String surname, LocalDate dateOfBirthday, String personalId) {
+    public Person(int id, String name, String surname, LocalDate dateOfBirthday, String personalId) {
         this.id = id;
         this.name = name;
         this.surname = surname;
