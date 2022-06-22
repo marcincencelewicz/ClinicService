@@ -28,16 +28,12 @@ public class Doctor extends Person {
     }
 
     public static Doctor theMostVisit(List<Doctor> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("List must not empty");
-        }
-        Doctor maxVisit = list.get(0);
-        for (Doctor doctor : list) {
-            if (maxVisit.getVisits().size() < doctor.getVisits().size()) {
-                maxVisit = doctor;
-            }
-        }
-        return maxVisit;
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingLong(d -> d.getVisits().size()))
+                .orElseThrow();
     }
 
     public static String theMostSpeciality() {
