@@ -61,6 +61,27 @@ public class Visit {
         }
     }
 
+    public static int theMostVisitOfYear(List<Visit> list) {
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("List must not empty");
+        }
+        int maxYear = list.get(0).getDateOfVisit().getYear();
+        int tempMax = 0;
+        for (Visit visit : list) {
+            int temp = 0;
+            for (Visit visit1 :list) {
+                if (visit.getDateOfVisit().getYear() == visit1.getDateOfVisit().getYear()) {
+                    temp++;
+                }
+                if (tempMax < temp) {
+                    tempMax = temp;
+                    maxYear = visit.getDateOfVisit().getYear();
+                }
+            }
+        }
+        return maxYear;
+    }
+
     public static List<Visit> getExtension() {
         return extension;
     }

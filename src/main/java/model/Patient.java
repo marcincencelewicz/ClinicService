@@ -30,6 +30,18 @@ public class Patient extends Person{
             Patient patient = new Patient(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf));
         }
     }
+    public static Patient theMostVisit (List<Patient> list){
+        if (list == null || list.isEmpty()) {
+            throw new IllegalArgumentException("List must not empty");
+        }
+        Patient maxVisit = list.get(0);
+        for (Patient patient : list) {
+            if (maxVisit.getVisits().size() < patient.getVisits().size()) {
+                maxVisit = patient;
+            }
+        }
+        return maxVisit;
+    }
 
     public static List<Patient> getExtension() {
         return extension;

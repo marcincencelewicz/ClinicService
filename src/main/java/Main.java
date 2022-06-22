@@ -2,6 +2,7 @@ import model.Doctor;
 import model.Patient;
 import model.Visit;
 
+import javax.print.Doc;
 import java.io.IOException;
 
 
@@ -11,7 +12,13 @@ public class Main {
         Doctor.readFile("C:\\Users\\CELEK\\IdeaProjects\\ClinicService\\doctors.txt");
         Patient.readFile("C:\\Users\\CELEK\\IdeaProjects\\ClinicService\\patients.txt");
         Visit.readFile("C:\\Users\\CELEK\\IdeaProjects\\ClinicService\\visits.txt");
-        System.out.println(Visit.getExtension());
 
+        System.out.println(Doctor.theMostVisit(Doctor.getExtension()));
+        System.out.println(Patient.theMostVisit(Patient.getExtension()));
+        System.out.println(Doctor.theMostSpeciality());
+        System.out.println(Visit.theMostVisitOfYear(Visit.getExtension()));
+        System.out.println(Doctor.theMostDoctorsAreSpecialization(Doctor.getExtension()));
+        System.out.println(Doctor.numberOfDifferentSpecializations(Doctor.getExtension()));
+        System.out.println(Doctor.nTopMostOldest(Doctor.getExtension(), 5));
     }
 }
