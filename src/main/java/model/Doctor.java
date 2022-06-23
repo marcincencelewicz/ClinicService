@@ -1,21 +1,17 @@
 package model;
 
-import Interfaces.IReadFile;
 import constants.ComparatorDateOfBihtrday;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Doctor extends Person {
-    private static List<Doctor> extension = new ArrayList<>();
+    private static final List<Doctor> extension = new ArrayList<>();
     private List<Visit> visits = new ArrayList<>();
     private String speciality;
-    private String nip;
+    private final String nip;
 
     public Doctor(int id, String name, String surname, String speciality, LocalDate dateOfBirthday, String personalId, String nip) {
         super(id, name, surname, dateOfBirthday, personalId);
@@ -30,16 +26,12 @@ public class Doctor extends Person {
     }
 
     public static Doctor theMostVisit(List<Doctor> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("List must not empty");
-        }
-        Doctor maxVisit = list.get(0);
-        for (Doctor doctor : list) {
-            if (maxVisit.getVisits().size() < doctor.getVisits().size()) {
-                maxVisit = doctor;
-            }
-        }
-        return maxVisit;
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingLong(d -> d.getVisits().size()))
+                .orElseThrow();
     }
 
     public static String theMostSpeciality() {
@@ -47,39 +39,31 @@ public class Doctor extends Person {
     }
 
     public static String theMostDoctorsAreSpecialization(List<Doctor> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("lista nie moze byc pusta");
-        }
-
-        String maxDoctorsSpecialization = list.get(0).getSpeciality();
-        List<String> specializations = new ArrayList<>();
-        HashSet<String> specjalizacjeBezPowtorzen = new HashSet<>();
-        for (Doctor d : list) {
-            specializations.add(d.getSpeciality());
-            specjalizacjeBezPowtorzen.add(d.getSpeciality());
-        }
-        int temp1 = 0;
-        for (String s1 : specjalizacjeBezPowtorzen) {
-            int temp2 = 0;
-            for (String s2 : specializations) {
-                if (s1.equals(s2)) {
-                    temp2++;
-                }
-                if (temp2 > temp1) {
-                    temp1 = temp2;
-                    maxDoctorsSpecialization = s1;
-                }
-            }
-        }
-        return maxDoctorsSpecialization;
+        return numberOfSpeciality(list)
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow();
     }
 
-    public static int numberOfDifferentSpecializations(List<Doctor> list) {
-        HashSet<String> specializations = new HashSet<>();
-        for (Doctor doctor : list) {
-            specializations.add(doctor.getSpeciality());
-        }
-        return specializations.size();
+    public static Map<String, Long> numberOfSpeciality(List<Doctor> list) {
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(d -> d.getSpeciality())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+    }
+
+    public static long numberOfDifferentSpecializations(List<Doctor> list) {
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(d -> d.getSpeciality())
+                .distinct()
+                .count();
     }
 
     public static List<Doctor> nTopMostOldest(List<Doctor> list, int nTop) {
@@ -94,16 +78,7 @@ public class Doctor extends Person {
         return mostOldest.subList(0, nTop);
     }
 
-    public static void readFile(String path) throws IOException {
-        List<String> reading = IReadFile.readFilePath(path);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
-        for (String s : reading) {
-            String[] tab = s.split("\\t");
-            Doctor doctor = new Doctor(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf), tab[5], tab[6]);
-        }
-    }
-
-    public static List<Doctor> getExtension() {
+    public static final List<Doctor> getExtension() {
         return extension;
     }
 
@@ -115,7 +90,7 @@ public class Doctor extends Person {
         this.visits = visits;
     }
 
-    public String getSpeciality() {
+    public final String getSpeciality() {
         return speciality;
     }
 
@@ -123,7 +98,7 @@ public class Doctor extends Person {
         this.speciality = speciality;
     }
 
-    public String getNip() {
+    public final String getNip() {
         return nip;
     }
 }

@@ -1,15 +1,11 @@
 package model;
 
-import Interfaces.IReadFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Patient extends Person {
-    private static List<Patient> extension = new ArrayList<>();
+    private static final List<Patient> extension = new ArrayList<>();
     private List<Visit> visits = new ArrayList<>();
 
     public Patient(int id, String name, String surname, String personalId, LocalDate dateOfBirthday) {
@@ -23,28 +19,15 @@ public class Patient extends Person {
     }
 
     public static Patient theMostVisit(List<Patient> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("List must not empty");
-        }
-        Patient maxVisit = list.get(0);
-        for (Patient patient : list) {
-            if (maxVisit.getVisits().size() < patient.getVisits().size()) {
-                maxVisit = patient;
-            }
-        }
-        return maxVisit;
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingLong(d -> d.getVisits().size()))
+                .orElseThrow();
     }
 
-    public static void readFile(String path) throws IOException {
-        List<String> reading = IReadFile.readFilePath(path);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
-        for (String s : reading) {
-            String[] tab = s.split("\\t");
-            Patient patient = new Patient(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf));
-        }
-    }
-
-    public static List<Patient> getExtension() {
+    public static final List<Patient> getExtension() {
         return extension;
     }
 
