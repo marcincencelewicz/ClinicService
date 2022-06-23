@@ -6,7 +6,7 @@ public abstract class Person {
     private int id;
     private final String name;
     private final String surname;
-    private final LocalDate dateOfBirthday;
+    private LocalDate dateOfBirthday;
     private final String personalId;
 
     public Person(int id, String name, String surname, LocalDate dateOfBirthday, String personalId) {

@@ -1,13 +1,11 @@
 package model;
 
-import Interfaces.IReadFile;
 import constants.ComparatorDateOfBihtrday;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Stream;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Doctor extends Person {
     private static final List<Doctor> extension = new ArrayList<>();
@@ -23,7 +21,7 @@ public class Doctor extends Person {
         extension.add(this);
     }
 
-   public void addVisit(Visit visit) {
+    public void addVisit(Visit visit) {
         visits.add(visit);
     }
 
@@ -41,31 +39,21 @@ public class Doctor extends Person {
     }
 
     public static String theMostDoctorsAreSpecialization(List<Doctor> list) {
-        if (list == null || list.isEmpty()) {
-            throw new IllegalArgumentException("lista nie moze byc pusta");
-        }
+        return numberOfSpeciality(list)
+                .entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElseThrow();
+    }
 
-        String maxDoctorsSpecialization = list.get(0).getSpeciality();
-        List<String> specializations = new ArrayList<>();
-        HashSet<String> specjalizacjeBezPowtorzen = new HashSet<>();
-        for (Doctor d : list) {
-            specializations.add(d.getSpeciality());
-            specjalizacjeBezPowtorzen.add(d.getSpeciality());
-        }
-        int temp1 = 0;
-        for (String s1 : specjalizacjeBezPowtorzen) {
-            int temp2 = 0;
-            for (String s2 : specializations) {
-                if (s1.equals(s2)) {
-                    temp2++;
-                }
-                if (temp2 > temp1) {
-                    temp1 = temp2;
-                    maxDoctorsSpecialization = s1;
-                }
-            }
-        }
-        return maxDoctorsSpecialization;
+    public static Map<String, Long> numberOfSpeciality(List<Doctor> list) {
+        return Optional.ofNullable(list)
+                .orElse(Collections.emptyList())
+                .stream()
+                .filter(Objects::nonNull)
+                .map(d -> d.getSpeciality())
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
     public static long numberOfDifferentSpecializations(List<Doctor> list) {
@@ -88,15 +76,6 @@ public class Doctor extends Person {
         List<Doctor> mostOldest = new ArrayList<>(list);
         Collections.sort(mostOldest, new ComparatorDateOfBihtrday());
         return mostOldest.subList(0, nTop);
-    }
-
-    public static void readFile(String path) throws IOException {
-        List<String> reading = IReadFile.readFilePath(path);
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-M-d");
-        for (String s : reading) {
-            String[] tab = s.split("\\t");
-            Doctor doctor = new Doctor(Integer.parseInt(tab[0]), tab[1], tab[2], tab[3], LocalDate.parse(tab[4], dtf), tab[5], tab[6]);
-        }
     }
 
     public static final List<Doctor> getExtension() {
